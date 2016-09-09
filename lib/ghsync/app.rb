@@ -7,7 +7,6 @@ module Ghsync
     def run
       config = Config.load_config
       repo_syncer = RepoSync.new(config)
-      binding.pry
       repo_syncer.sync
     end
   end

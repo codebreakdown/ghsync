@@ -3,22 +3,36 @@ require 'json'
 module Ghsync
   class Config
     attr_accessor :organizations, :repositories, :username, :password, :base_path
-    
+
+    # Organization config
+    # {
+    #   "name": "org",
+    #   "exclude": ["repo"],
+    #   "base_path": "org"
+    # }
+    # Repository config
+    # {
+    #   "owner": "owner",
+    #   "repository": "repo",
+    #   "base_path": "repo"
+    # }
     def initialize(config)
       @organizations = config["organizations"] || []
       @repositories = config["repositories"] || []
       @username = config["username"]
       @password = config["password"]
       @base_path = config["base_path"]
-      if config["use_pra"]
-        pra_config = Config.parse_pra_config_file
-        github_config = pra_config["pull_sources"].select {|source| source["type"] == "github"}.first
-        unless github_config.nil?
-          @organizations += github_config["config"]["organizations"]
-          @repositories += github_config["config"]["repositories"]
-          @username ||= github_config["config"]["username"]
-          @password ||= github_config["config"]["password"]
-        end
+      import_from_pra if config["use_pra"]
+    end
+
+    def self.import_from_pra
+      pra_config = Config.parse_pra_config_file
+      github_config = pra_config["pull_sources"].select {|source| source["type"] == "github"}.first
+      unless github_config.nil?
+        @organizations += github_config["config"]["organizations"]
+        @repositories += github_config["config"]["repositories"]
+        @username ||= github_config["config"]["username"]
+        @password ||= github_config["config"]["password"]
       end
     end
 
