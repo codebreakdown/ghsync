@@ -18,7 +18,7 @@ module Ghsync
     # 6. Fetch in existing projects for the org?
     def org_sync
       @config.organizations.each do |org|
-        target_folder = org["base_path"] || @config.base_path
+        target_folder = File.expand_path(org["base_path"]) || @config.base_path
         known_projects = cloned_projects(org["name"], target_folder)
         Dir.chdir target_folder
 
