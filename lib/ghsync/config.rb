@@ -2,19 +2,19 @@ require 'json'
 
 module Ghsync
   class Config
-    attr_accessor :organizations, :repositories, :username, :password, :base_path
+    attr_reader :organizations, :repositories, :username, :password, :base_path
 
     # Organization config
     # {
     #   "name": "org",
     #   "exclude": ["repo"],
-    #   "base_path": "org"
+    #   "base_path": "org" #optional
     # }
     # Repository config
     # {
     #   "owner": "owner",
-    #   "repository": "repo",
-    #   "base_path": "repo"
+    #   "name": "repo",
+    #   "base_path": "repo" #optional
     # }
     def initialize(config)
       @organizations = config["organizations"] || []
@@ -23,6 +23,9 @@ module Ghsync
       @password = config["password"]
       @base_path = config["base_path"]
       import_from_pra if config["use_pra"]
+    end
+
+    def self.create(import_from_pra: true)
     end
 
     def self.import_from_pra
