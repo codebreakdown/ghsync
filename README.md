@@ -1,28 +1,77 @@
-# Ghsync
+# Ghsync - The GitHub Repository Syncronizer
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/ghsync`. To experiment with that code, run `bin/console` for an interactive prompt.
-
-TODO: Delete this and the text above, and describe your gem
+Sync your github organization repos in one command. It clones missing repositories and fetches existing one. Makes joining a new organization a snap!
 
 ## Installation
 
-Add this line to your application's Gemfile:
-
-```ruby
-gem 'ghsync'
-```
-
-And then execute:
-
-    $ bundle
-
-Or install it yourself as:
+You can easily install `ghsync` with the following command:
 
     $ gem install ghsync
 
+## Configuration
+
+Your ghsync configuration should be saved to ~/.ghsync/config.json. 
+```json
+{
+  "base_path": "~/dev",
+  "username": "<github username>",
+  "password": "<github password>",
+  "organizations": [
+    {
+      "name": "codebreakdown",
+      "exclude": [],
+      "base_path": "~/dev/codebreakdown"
+    }
+  ],
+  "repositories": [
+    {
+      "owner": "codebreakdown",
+      "name": "ghsync"
+    }
+  ]
+}
+```
+
+### GitHub Authentication
+
+#### Multi-Factor Authentication
+
+Sadly, at the moment `ghsync` doesn't support GitHub's Multi-Factor
+Authentication. 
+
+#### OAuth
+
+It is also lacking support for GitHub's OAuth mechanism.
+
+#### HTTP Basic Auth
+
+The HTTP Basic Auth will work as long as you don't have multi-factor
+authentication enabled for your account.
+
+#### Personal Access Token
+
+Personal Access Token authentication is currently supported and this is the
+recommended authentication mechanism to use right now. It is the only
+authentication mechanism you can use at the moment if you have multi-factor
+authentication enabled.
+
+Simply go to your GitHub **Account Settings**, select **Applications**, click
+the **Create new token** button in the **Personal Access Token** section. Give
+it the name "GHsync" and submit. This will generate your personal access token.
+Then simply put your personal access token in the `~/.ghsync/config.json` as your GitHub
+username and "x-oauth-basic" as your GitHub password.
+
 ## Usage
 
-TODO: Write usage instructions here
+Once you have configured `ghsync` as described above you can launch it by simply
+running the following command:
+
+    ghsync
+
+Once it launches, it will use the information provided in the
+`~/.ghsync/config.json` configuration file to fetch all the configured
+repositories and either fetch them if they exist, or clone them if they are
+missing.
 
 ## Development
 
@@ -32,7 +81,7 @@ To install this gem onto your local machine, run `bundle exec rake install`. To 
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/ghsync. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](http://contributor-covenant.org) code of conduct.
+Bug reports and pull requests are welcome on GitHub at https://github.com/codebreakdown/ghsync. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](http://contributor-covenant.org) code of conduct.
 
 
 ## License
