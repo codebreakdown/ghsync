@@ -49,7 +49,7 @@ module Ghsync
     def repo_sync
       @config.repositories.each do |repo_config|
         target_folder = File.expand_path(repo_config["base_path"] || @config.base_path)
-        # TODO This seem expensive to search for projects for each repo, maybe
+        # TODO This seems expensive to search for projects for each repo, maybe
         # turn this into something that is done for all target folders for
         # orgs and repos?
         projects = cloned_projects(repo_config["owner"], target_folder)
@@ -60,7 +60,7 @@ module Ghsync
           puts "Cloning #{repo_config["owner"]}/#{repo_config["name"]}"
           `git clone #{repo[:ssh_url]}`
         else
-          puts "Syncing #{repo[:name]}"
+          puts "Syncing #{repo_config["name"]}"
           `cd #{project[:path]} && git fetch`
         end
       end
