@@ -56,7 +56,6 @@ module Ghsync
         project = projects[repo_config["name"]]
         Dir.chdir target_folder
         if project.nil?
-          binding.pry
           repo = repository(repo_config["owner"], repo_config["name"])
           puts "Cloning #{repo_config["owner"]}/#{repo_config["name"]}"
           `git clone #{repo[:ssh_url]}`
